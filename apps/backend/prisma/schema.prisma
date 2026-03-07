@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  // Identificação e Autenticidade
+  nomeFundador      String
+  cnpj              String   @unique // Chave para o algoritmo de verificação
+  dataAbertura      DateTime
+  razaoSocial       String
+  nomeFantasia      String?
+  naturezaJuridica  String
+  situacaoCadastral String // Ativa, Suspensa, etc.
+  porte             String // ME, EPP, etc.
+
+  // Localização Estruturada (Para match geográfico)
+  logradouro  String
+  numero      String
+  complemento String?
+  cep         String
+  bairro      String
+  municipio   String
+  uf          String
+
+  // Atividades (CNAEs)
+  cnaePrincipal    String
+  cnaesSecundarios String[] // Array para facilitar buscas por setor
+
+  // Contatos e Métricas de Operação
+  email            String  @unique
+  telefone         String
+  funcDiretos      Int     @default(0)
+  funcIndiretos    Int     @default(0)
+  faturamentoAnual Decimal @db.Decimal(13, 2)
+
+  // Dados Qualitativos (Para NLP / Machine Learning)
+  historia          String @db.Text
+  problemasLatentes String @db.Text // Descrição dos desafios
+
+  // Controle de Acesso
+  isVerified Boolean @default(false)
+}

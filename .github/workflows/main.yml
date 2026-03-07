@@ -1,0 +1,48 @@
+name: CI Empreender Juntos
+
+# Define QUANDO o pipeline vai rodar 
+on:
+  push: 
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs: 
+  test-and-build:
+    name: Build & Test (Bun)
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixa o código do seu repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Instala o Bun no servidor do Github (Ação oficial)
+      - name: Setup Bun 
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      # 3. Instala as dependências do Backend
+      - name: Instalar dependências (Backend)
+        working-directory: ./apps/backend
+        run: bun install
+
+      # 4. Executa os testes automatizados
+      - name: Executar Testes (Backend)
+        working-directory: ./apps/backend
+        run: bun test
+
+      # 5. Instala dependências e faz o Build do frontend para garantir que não há erros de compilação/tipagem
+      - name: Instalar dependências (frontend)
+        working-directory: ./apps/frontend
+        run: bun install
+
+      - name: Build do frontend (Vite)
+        working-directory: ./apps/frontend
+        run: bun run build
+
+
+
+
+

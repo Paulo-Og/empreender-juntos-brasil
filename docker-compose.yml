@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # 1. Banco de Dados (PostgreSQL) - O alicerce dos dados
+  db:
+    image: postgres:15-alpine
+    container_name: db-empreender-juntos
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: empreender_juntos_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Backend (Bun API)
+  backend:
+    build:
+      context: ./apps/backend  # Ajustado para sua estrutura de pastas
+      dockerfile: Dockerfile
+    container_name: backend-bun
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      # Conecta ao serviço 'db' usando o nome do serviço no Docker
+      DATABASE_URL: postgres://user:password@db:5432/empreender_juntos_db?schema=public
+    depends_on:
+      - db
+    command: ["bun", "run", "dev"]
+
+  # 3. Frontend (Vite com Bun)
+  frontend:
+    image: oven/bun:1
+    container_name: frontend-vite
+    working_dir: /app
+    volumes:
+      - ./apps/frontend:/app  # Ajustado para sua estrutura de pastas
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: ["sh", "-c", "bun install && bun run dev --host"]
+
+volumes:
+  postgres_data:
