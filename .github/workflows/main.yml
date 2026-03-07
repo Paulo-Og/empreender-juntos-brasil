@@ -26,7 +26,9 @@ jobs:
       # 3. Instala as dependências do Backend
       - name: Instalar dependências (Backend)
         working-directory: ./apps/backend
-        run: bun install
+        run: |
+          bun install
+          bunx prisma generate
 
       # 4. Executa os testes automatizados
       - name: Executar Testes (Backend)
