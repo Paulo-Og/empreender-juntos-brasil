@@ -12,6 +12,7 @@ COPY package.json ./
 COPY bun.lock ./ 
 
 RUN bun install
+RUN bunx prisma generate
 
 # 4. Cópia do Código Fonte
 COPY . .
