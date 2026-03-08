@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 # Nota: Se o lockb estiver na raiz do projeto, você precisará 
 # decidir se mantém um lock por app ou um global.
-COPY bun.lockb ./ 
+COPY bun.lock ./ 
 
 RUN bun install
 
