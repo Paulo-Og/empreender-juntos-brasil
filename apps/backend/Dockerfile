@@ -11,6 +11,8 @@ COPY package.json ./
 # decidir se mantém um lock por app ou um global.
 COPY bun.lock ./ 
 
+COPY prisma ./prisma
+
 RUN bun install
 RUN bunx prisma generate
 
