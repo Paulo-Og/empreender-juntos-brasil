@@ -45,6 +45,12 @@ jobs:
         run: bun run build
 
 
+      # 6. Deploy seguro no Render 
+      - name: Deploy no Render 
+        if: success() # Garante que o deploy só vai acontecer se todos os testes anteriores derem certo
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }} 
+
+
 
 
 
