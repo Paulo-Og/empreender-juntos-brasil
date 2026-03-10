@@ -1,8 +1,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Users, ArrowDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+
+  const navigate = useNavigate();
+
   return (
     <section className="pt-20 pb-16 bg-gradient-to-br from-gray-50 via-white to-green-50">
       <div className="container mx-auto px-4 py-16">
@@ -42,6 +46,7 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-gradient-entrepreneur hover:bg-gradient-entrepreneur-dark text-white px-8 py-3 text-lg"
+                onClick={() => navigate('/register')}
               >
                 Começar Agora
               </Button>

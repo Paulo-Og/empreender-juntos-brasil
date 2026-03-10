@@ -76,7 +76,13 @@ const Header = () => {
                 <Button variant="outline" className="border-entrepreneur-green text-entrepreneur-green">
                   Entrar
                 </Button>
-                <Button className="bg-gradient-entrepreneur text-white">
+                <Button 
+                  className="bg-gradient-entrepreneur text-white"
+                  onClick={() => {
+                    setIsMenuOpen(false); // 1. Fecha o menu mobile
+                    navigate('/register'); // 2. Navega para a página de registro
+                  }}
+                >
                   Cadastrar
                 </Button>
               </div>
